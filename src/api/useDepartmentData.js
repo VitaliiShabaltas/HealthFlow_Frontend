@@ -1,0 +1,83 @@
+import { useState, useEffect } from 'react';
+
+const API_BASE = 'https://healthflowbackend-production.up.railway.app';
+
+export function useDepartments() {
+  const [departments, setDepartments] = useState([]);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    async function fetchDepartments() {
+      try {
+        const res = await fetch(`${API_BASE}/departments`);
+        if (!res.ok) throw new Error('Не вдалося завантажити відділення');
+        const data = await res.json();
+        setDepartments(data);
+      } catch (err) {
+        console.error(err);
+        setError('Помилка при завантаженні відділень');
+      }
+    }
+    fetchDepartments();
+  }, []);
+
+  return { departments, error };
+}
+
+export function useSpecialties(departmentId) {
+  const [specialties, setSpecialties] = useState([]);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    async function fetchSpecialties() {
+      if (!departmentId) {
+        setSpecialties([]);
+        return;
+      }
+      try {
+        const res = await fetch(
+          `${API_BASE}/departments/${departmentId}/specializations`
+        );
+        if (!res.ok) throw new Error('Не вдалося завантажити спеціальності');
+        const data = await res.json();
+        setSpecialties(data);
+      } catch (err) {
+        console.error(err);
+        setError('Помилка при завантаженні спеціальностей');
+      }
+    }
+    fetchSpecialties();
+  }, [departmentId]);
+
+  return { specialties, error };
+}
+
+export function useDoctors(specialtyId) {
+  const [doctors, setDoctors] = useState([]);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    async function fetchDoctors() {
+      if (!specialtyId) {
+        setDoctors([]);
+        return;
+      }
+      try {
+        const res = await fetch(`${API_BASE}/users/doctors`);
+        if (!res.ok) throw new Error('Не вдалося завантажити лікарів');
+        const data = await res.json();
+
+        const filteredDoctors = data.filter(
+          (doctor) => String(doctor.specialization_id) === String(specialtyId)
+        );
+        setDoctors(filteredDoctors);
+      } catch (err) {
+        console.error(err);
+        setError('Помилка при завантаженні лікарів');
+      }
+    }
+    fetchDoctors();
+  }, [specialtyId]);
+
+  return { doctors, error };
+}

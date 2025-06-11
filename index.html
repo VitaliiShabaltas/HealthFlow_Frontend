@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="./assets/logo.jpg" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@100..700&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap"
+      rel="stylesheet"
+    />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>HealtFlow+</title>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.jsx"></script>
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+    <script>
+      // 1. Parse the returned code/ID token from URL
+      const params = new URLSearchParams(window.location.search);
+      const idToken = params.get('id_token');
+      const code = params.get('code');
+
+      // 2. Post it back to the opener (same origin!)
+      window.opener.postMessage(
+        { type: 'google-signin-result', payload: { id_token: idToken, code } },
+        window.location.origin
+      );
+
+      // 3. Close this popup
+      window.close();
+    </script>
+  </body>
+</html>
