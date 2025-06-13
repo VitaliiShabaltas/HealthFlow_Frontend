@@ -1,3 +1,4 @@
+import { API_URL } from './init';
 export const validateFullName = (fullName) => {
   const parts = fullName.trim().split(/\s+/);
   if (parts.length < 2) return false;
@@ -36,14 +37,9 @@ export const validateDateOfBirth = (date) => {
 
   return selectedDate <= minAllowedDate;
 };
-
 export const checkEmailExists = async (email) => {
-  const clientRes = await fetch(
-    'https://healthflowbackend-production.up.railway.app/users/clients'
-  );
-  const doctorRes = await fetch(
-    'https://healthflowbackend-production.up.railway.app/users/doctors'
-  );
+  const clientRes = await fetch(`${API_URL}/users/clients`);
+  const doctorRes = await fetch(`${API_URL}/users/doctors`);
 
   if (!clientRes.ok || !doctorRes.ok) {
     throw new Error('Не вдалося перевірити email');

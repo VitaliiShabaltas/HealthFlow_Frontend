@@ -5,10 +5,10 @@ import FiltersBarAdmin from './FiltersBarAdmin';
 import DayScheduleManager from './DayScheduleManager';
 import { generateTimeSlots } from '../../utils/GenerateTimeSlots';
 import { format, addDays, startOfWeek, addWeeks } from 'date-fns';
+import { API_URL } from '../../api/init';
 import ukLocale from 'date-fns/locale/uk';
 
 const daysOfWeek = ['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Нд'];
-const API_BASE = 'https://healthflowbackend-production.up.railway.app';
 
 export default function DoctorScheduleManager() {
   const navigate = useNavigate();
@@ -39,7 +39,7 @@ export default function DoctorScheduleManager() {
 
       try {
         const res = await fetch(
-          `${API_BASE}/timetable?doctorId=${doctorId}&dateFrom=${startDate}&dateTo=${endDate}`
+          `${API_URL}/timetable?doctorId=${doctorId}&dateFrom=${startDate}&dateTo=${endDate}`
         );
         if (!res.ok) throw new Error(`Статус ${res.status}`);
         const data = await res.json();

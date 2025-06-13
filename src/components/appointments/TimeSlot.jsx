@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import TimeSlotTooltip from './TimeSlotTooltip';
+import { API_URL } from '../../api/init';
 
 export default function TimeSlot({
   time,
@@ -17,10 +18,7 @@ export default function TimeSlot({
     onClick();
 
     try {
-      const res = await fetch(
-        `https://healthflowbackend-production.up.railway.app/appointments`
-      );
-      const data = await res.json();
+      const res = await fetch(`${API_URL}/appointments`);
 
       const appointment = data.find(
         (a) =>

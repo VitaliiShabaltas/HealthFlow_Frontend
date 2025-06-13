@@ -4,6 +4,7 @@ import backIcon from '../assets/icons/backNav.svg';
 import { Button } from '../components/ui/Button';
 import { RecForm } from '../components/shared/RecForm';
 import { RecView } from '../components/shared/RecView';
+import { API_URL } from '../api/init';
 
 export function HealthCardPage() {
   const { clientId } = useParams();
@@ -14,9 +15,7 @@ export function HealthCardPage() {
   useEffect(() => {
     const fetchMedicalCards = async () => {
       try {
-        const response = await fetch(
-          `https://healthflowbackend-production.up.railway.app/medical-card/${clientId}`
-        );
+        const response = await fetch(`${API_URL}/medical-card/${clientId}`);
         const data = await response.json();
         setMedicalCards(data || []);
       } catch (error) {

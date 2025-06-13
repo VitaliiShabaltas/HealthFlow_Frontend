@@ -4,6 +4,7 @@ import backIcon from '../assets/icons/backNav.svg';
 import DaySchedule from '../components/doctors/DaySchedule';
 import { generateTimeSlots } from '../utils/GenerateTimeSlots';
 import { format, addDays, startOfWeek, addWeeks } from 'date-fns';
+import { API_URL } from '../api/init';
 import ukLocale from 'date-fns/locale/uk';
 
 const daysOfWeek = ['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Нд'];
@@ -30,7 +31,7 @@ export function DoctorSchedule() {
 
       try {
         const res = await fetch(
-          `https://healthflowbackend-production.up.railway.app/timetable?doctorId=${doctorId}&dateFrom=${startDate}&dateTo=${endDate}`
+          `${API_URL}/timetable?doctorId=${doctorId}&dateFrom=${startDate}&dateTo=${endDate}`
         );
         const data = await res.json();
 

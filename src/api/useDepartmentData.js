@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
-
-const API_BASE = 'https://healthflowbackend-production.up.railway.app';
+import { API_URL } from './init';
 
 export function useDepartments() {
   const [departments, setDepartments] = useState([]);
@@ -9,7 +8,7 @@ export function useDepartments() {
   useEffect(() => {
     async function fetchDepartments() {
       try {
-        const res = await fetch(`${API_BASE}/departments`);
+        const res = await fetch(`${API_URL}/departments`);
         if (!res.ok) throw new Error('Не вдалося завантажити відділення');
         const data = await res.json();
         setDepartments(data);
@@ -36,7 +35,7 @@ export function useSpecialties(departmentId) {
       }
       try {
         const res = await fetch(
-          `${API_BASE}/departments/${departmentId}/specializations`
+          `${API_URL}/departments/${departmentId}/specializations`
         );
         if (!res.ok) throw new Error('Не вдалося завантажити спеціальності');
         const data = await res.json();
@@ -63,11 +62,9 @@ export function useDoctors(specialtyId) {
         return;
       }
       try {
-        const res = await fetch(`${API_BASE}/users/doctors`);
-        if (!res.ok) throw new Error('Не вдалося завантажити лікарів');
-        const data = await res.json();
+        const res = await fetch(`${API_URL}/users/doctors`);
 
-        const filteredDoctors = data.filter(
+        teredDoctors = data.filter(
           (doctor) => String(doctor.specialization_id) === String(specialtyId)
         );
         setDoctors(filteredDoctors);

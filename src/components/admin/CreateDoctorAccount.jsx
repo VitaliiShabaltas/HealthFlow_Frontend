@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Button } from '../ui/Button';
-const API_BASE = 'https://healthflowbackend-production.up.railway.app';
+import { API_URL } from '../../api/init';
 import {
   validateFullName,
   validateEmail,
@@ -152,7 +152,7 @@ export default function CreateDoctorAccount() {
     };
 
     try {
-      const res = await fetch(`${API_BASE}/users/doctors`, {
+      const res = await fetch(`${API_URL}/users/doctors`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload),

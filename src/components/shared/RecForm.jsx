@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Button } from '../ui/Button';
 import { getDoctorById } from '../../api/doctors';
 import { getJWT } from '../../utils/jwt';
+import { API_URL } from '../../api/init';
 
 export const RecForm = ({ onCancel, clientId }) => {
   const [appointmentId, setAppointmentId] = useState('');
@@ -17,9 +18,7 @@ export const RecForm = ({ onCancel, clientId }) => {
   useEffect(() => {
     const fetchLatestAppointment = async () => {
       try {
-        const res = await fetch(
-          'https://healthflowbackend-production.up.railway.app/appointments'
-        );
+        const res = await fetch(`${API_URL}/appointments`);
         const appointments = await res.json();
 
         const filtered = appointments.filter(
@@ -78,15 +77,11 @@ export const RecForm = ({ onCancel, clientId }) => {
 
     try {
       const token = getJWT();
-
-      const checkResponse = await fetch(
-        'https://healthflowbackend-production.up.railway.app/medical-card',
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+      const checkResponse = await fetch(`${API_URL}/medical-card`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
       if (!checkResponse.ok) {
         const text = await checkResponse.text();
         throw new Error(`Не вдалося перевірити медкартки: ${text}`);
@@ -112,17 +107,14 @@ export const RecForm = ({ onCancel, clientId }) => {
         notes,
       };
 
-      const response = await fetch(
-        'https://healthflowbackend-production.up.railway.app/medical-card/add',
-        {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${token}`,
-          },
-          body: JSON.stringify(newRecord),
-        }
-      );
+      const response = await fetch(`${API_URL}/medical-card/add`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(newRecord),
+      });
 
       if (!response.ok) {
         const errorText = await response.text();
@@ -131,7 +123,7 @@ export const RecForm = ({ onCancel, clientId }) => {
       }
 
       const updateResponse = await fetch(
-        `https://healthflowbackend-production.up.railway.app/appointments/${appointmentId}`,
+        `${API_URL}/appointments/${appointmentId}`,
         {
           method: 'PATCH',
           headers: {

@@ -42,12 +42,6 @@ export function RegisterPage({ setIsLoggedIn }) {
     }
 
     try {
-      const emailExists = await checkEmailExists(email);
-      if (emailExists) {
-        setError('Користувач з таким email вже існує');
-        return;
-      }
-
       const credentials = {
         surname,
         name,

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import TimeSlotManager from './TimeSlotManager';
+import { API_URL } from '../../api/init';
 import {
   generateTimeFromIndex,
   generateTimeSlots,
@@ -40,14 +41,11 @@ export default function DayScheduleManager({
           status: 'unavailable',
         };
 
-        const res = await fetch(
-          `https://healthflowbackend-production.up.railway.app/timetable/add`,
-          {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(payload),
-          }
-        );
+        const res = await fetch(`${API_URL}/timetable/add`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload),
+        });
         if (!res.ok) {
           const errorBody = await res.text();
           console.error('Bad response:', res.status, errorBody);
@@ -80,13 +78,10 @@ export default function DayScheduleManager({
       }
 
       try {
-        const res = await fetch(
-          `https://healthflowbackend-production.up.railway.app/timetable/delete/${idToDelete}`,
-          {
-            method: 'DELETE',
-            headers: { Accept: '*/*' },
-          }
-        );
+        const res = await fetch(`${API_URL}/timetable/delete/${idToDelete}`, {
+          method: 'DELETE',
+          headers: { Accept: '*/*' },
+        });
         if (!res.ok) {
           throw new Error(`Server returned ${res.status}`);
         }

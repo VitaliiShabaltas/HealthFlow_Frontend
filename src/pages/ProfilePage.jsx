@@ -8,6 +8,7 @@ import { getIdFromJWT, getJWT } from '../utils/jwt';
 import { AdminPanelPage } from './AdminPanelPage';
 import { getDoctorById, getDepartmentSpecializations } from '../api/doctors';
 import { getAppointments } from '../api/appointments';
+import { API_URL } from '../api/init';
 
 export function ProfilePage({ handleLogout }) {
   const [userData, setUserData] = useState(null);
@@ -51,12 +52,9 @@ export function ProfilePage({ handleLogout }) {
       }
       if (baseData.role === 'client') {
         const appointments = await getAppointments(token);
-        const doctorResponse = await fetch(
-          'https://healthflowbackend-production.up.railway.app/users/doctors',
-          {
-            headers: { Authorization: `Bearer ${token}` },
-          }
-        );
+        const doctorResponse = await fetch(`${API_URL}/users/doctors`, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
         const allDoctors = await doctorResponse.json();
         const doctorMap = new Map();
         allDoctors.forEach((d) => doctorMap.set(d.doctor_id, d));

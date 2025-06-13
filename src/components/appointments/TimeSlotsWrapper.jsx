@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import TimeSlot from './TimeSlot';
 import axios from 'axios';
+import { API_URL } from '../../api/init';
 
 const TimeSlotsWrapper = ({ date, doctorId }) => {
   const [appointments, setAppointments] = useState([]);
@@ -8,7 +9,7 @@ const TimeSlotsWrapper = ({ date, doctorId }) => {
 
   useEffect(() => {
     axios
-      .get('https://healthflowbackend-production.up.railway.app/appointments')
+      .get(`${API_URL}/appointments`)
       .then((res) => {
         setAppointments(res.data);
       })

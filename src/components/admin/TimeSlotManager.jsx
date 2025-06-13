@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import TimeSlotTooltip from '../appointments/TimeSlotTooltip';
 import { getJWT } from '../../utils/jwt';
+import { API_URL } from '../../api/init';
 
 export default function TimeSlotManager({
   time,
@@ -31,12 +32,9 @@ export default function TimeSlotManager({
 
     try {
       const token = getJWT();
-      const res = await fetch(
-        `https://healthflowbackend-production.up.railway.app/appointments`,
-        {
-          headers: token ? { Authorization: `Bearer ${token}` } : {},
-        }
-      );
+      const res = await fetch(`${API_URL}/appointments`, {
+        headers: token ? { Authorization: `Bearer ${token}` } : {},
+      });
       if (!res.ok) throw new Error(`Server returned ${res.status}`);
 
       const data = await res.json();

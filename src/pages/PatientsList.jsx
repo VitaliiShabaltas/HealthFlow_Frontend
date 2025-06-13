@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import backIcon from '../assets/icons/backNav.svg';
 import PatientCard from '../components/patients/PatientCard';
 import { FiSearch } from 'react-icons/fi';
+import { API_URL } from '../api/init';
 
 export function PatientsList() {
   const [patients, setPatients] = useState([]);
@@ -18,9 +19,7 @@ export function PatientsList() {
     }
     const fetchAppointments = async () => {
       try {
-        const response = await fetch(
-          'https://healthflowbackend-production.up.railway.app/appointments'
-        );
+        const response = await fetch(`${API_URL}/appointments`);
         const data = await response.json();
 
         const doctorAppointments = data.filter(
