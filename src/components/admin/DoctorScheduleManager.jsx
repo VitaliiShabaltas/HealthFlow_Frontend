@@ -5,9 +5,8 @@ import FiltersBarAdmin from './FiltersBarAdmin';
 import DayScheduleManager from './DayScheduleManager';
 import { generateTimeSlots } from '../../utils/GenerateTimeSlots';
 import { format, addDays, startOfWeek, addWeeks } from 'date-fns';
-import { API_URL } from '../../api/init';
+import { API_URL, authFetch } from '../../api/init';
 import ukLocale from 'date-fns/locale/uk';
-
 const daysOfWeek = ['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Нд'];
 
 export default function DoctorScheduleManager() {
@@ -38,7 +37,7 @@ export default function DoctorScheduleManager() {
       );
 
       try {
-        const res = await fetch(
+        const res = await authFetch(
           `${API_URL}/timetable?doctorId=${doctorId}&dateFrom=${startDate}&dateTo=${endDate}`
         );
         if (!res.ok) throw new Error(`Статус ${res.status}`);

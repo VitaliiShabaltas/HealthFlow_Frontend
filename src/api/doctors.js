@@ -1,11 +1,14 @@
 import { API_URL } from './init';
+import { getJWT } from '../utils/jwt';
 
 export const getDoctors = async () => {
+  const token = getJWT();
   try {
     const response = await fetch(`${API_URL}/users/doctors`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
       },
     });
 
@@ -77,26 +80,23 @@ export const getDepartmentSpecializations = async (departmentId) => {
 };
 
 export const getDoctorById = async (doctorId) => {
+  const token = getJWT();
   try {
     const response = await fetch(`${API_URL}/users/doctors/${doctorId}`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
       },
     });
 
     if (!response.ok) {
-      throw new Error(
-        `Failed to fetch specializations for department ${departmentId}`
-      );
+      throw new Error(`Failed to fetch doctor with id ${doctorId}`);
     }
 
     return await response.json();
   } catch (error) {
-    console.error(
-      `Error fetching specializations for department ${departmentId}:`,
-      error
-    );
+    console.error(`Error fetching doctor with id ${doctorId}:`, error);
     throw error;
   }
 };

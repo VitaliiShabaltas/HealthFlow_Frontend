@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import TimeSlotManager from './TimeSlotManager';
-import { API_URL } from '../../api/init';
+import { API_URL, authFetch } from '../../api/init';
 import {
   generateTimeFromIndex,
   generateTimeSlots,
@@ -41,7 +41,7 @@ export default function DayScheduleManager({
           status: 'unavailable',
         };
 
-        const res = await fetch(`${API_URL}/timetable/add`, {
+        const res = await authFetch(`${API_URL}/timetable/add`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(payload),
@@ -78,10 +78,13 @@ export default function DayScheduleManager({
       }
 
       try {
-        const res = await fetch(`${API_URL}/timetable/delete/${idToDelete}`, {
-          method: 'DELETE',
-          headers: { Accept: '*/*' },
-        });
+        const res = await authFetch(
+          `${API_URL}/timetable/delete/${idToDelete}`,
+          {
+            method: 'DELETE',
+            headers: { Accept: '*/*' },
+          }
+        );
         if (!res.ok) {
           throw new Error(`Server returned ${res.status}`);
         }

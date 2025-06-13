@@ -62,11 +62,24 @@ export function useDoctors(specialtyId) {
         return;
       }
       try {
-        const res = await fetch(`${API_URL}/users/doctors`);
+        const token = localStorage.getItem('jwt-token'); // або виклик твоєї функції getJWT()
+        const res = await fetch(`${API_URL}/users/doctors`, {
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`, // додай токен для авторизації
+          },
+        });
 
-        teredDoctors = data.filter(
+        if (!res.ok) {
+          throw new Error('Не вдалося завантажити лікарів');
+        }
+
+        const data = await res.json();
+
+        const filteredDoctors = data.filter(
           (doctor) => String(doctor.specialization_id) === String(specialtyId)
         );
+
         setDoctors(filteredDoctors);
       } catch (err) {
         console.error(err);
